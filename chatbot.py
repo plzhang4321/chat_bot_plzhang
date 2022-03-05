@@ -7,7 +7,7 @@ import redis
 import os
 global redis1
 
-
+# test
 def main():
     # Load your token and create an Updater for your Bot
 
