@@ -1,16 +1,17 @@
 name: Deploy
+
 on:
   push:
     branches:
       - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy to Heroku
-          uses: behe/heroku-build@v1
-          with:
-            app-name: "plzhang-chatbot"
-            app-key: ${{secrets.HEROKU_API_KEY}}
-            path: "optional-path-of-build-to-deploy"
+      - uses: CDNievas/heroku-action@v1.0 # This is the action
+        with:
+          heroku_email: "21433038@life.hkbu.edu.hk"
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "plzhang-chatbot"
