@@ -12,7 +12,7 @@ jobs:
           fetch-depth: 0
       - name: Deploy
         env:
-          HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
+          HEROKU_API_KEY: "d5c483b0-5b75-4f29-b0ab-fb08712ca441"
           HEROKU_APP_NAME: "plzhangcharbot43215671"  # Rename this to the app of your Heroku app.
         run: |
           git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
