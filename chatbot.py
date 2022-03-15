@@ -54,7 +54,7 @@ def hiking(update: Update, context: CallbackContext) -> None:
         msg = context.args[0]  # /hiking keyword <-- this should store the keyword
         print(msg)
         if redis1.exists(msg):
-            update.message.reply_text(redis1.get(msg))
+            update.message.reply_text(redis1.get(msg).decode('UTF-8'))
         else:
             msg = "*" + msg + "*"
             key = redis1.keys(msg)
@@ -62,7 +62,7 @@ def hiking(update: Update, context: CallbackContext) -> None:
             if not key:
                 update.message.reply_text("Sorry we found nothing https://www.discoverhongkong.cn/index.html")
             else:
-                update.message.reply_text(redis1.mget(key[:min(5, len(key))]))
+                update.message.reply_text(redis1.mget(key[:min(5, len(key))]).decode('UTF-8'))
     except (IndexError, ValueError):
         update.message.reply_text('Usage: /hiking <keyword>')
 
