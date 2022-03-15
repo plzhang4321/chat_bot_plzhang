@@ -26,10 +26,10 @@ def main():
 
     # register a dispatcher to handle message: here we register an echo dispatcher
     echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
-    dispatcher.hiking_handler(echo_handler)
+    dispatcher.add_handler(echo_handler)
 
     # on different commands - answer in Telegram
-    dispatcher.hiking_handler(CommandHandler("hiking", hiking))
+    dispatcher.add_handler(CommandHandler("hiking", hiking))
 
     # To start the bot:
     updater.start_polling()
