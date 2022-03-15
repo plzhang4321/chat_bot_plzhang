@@ -52,14 +52,12 @@ def hiking(update: Update, context: CallbackContext) -> None:
         global redis1
         logging.info(context.args[0])
         msg = context.args[0]  # /hiking keyword <-- this should store the keyword
-        print(msg)
         if redis1.exists(msg):
             update.message.reply_text(redis1.get(msg).decode('UTF-8'))
         else:
             msg = "*" + msg + "*"
             key = redis1.keys(msg)
-            print(msg, key)
-            if not key:
+            if len(key) < 1:
                 update.message.reply_text(
                     "Sorry we found nothing in our record, but I recommend this to you  https://www.discoverhongkong.cn/index.html")
             else:
