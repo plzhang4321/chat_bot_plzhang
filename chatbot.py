@@ -63,7 +63,7 @@ def hiking(update: Update, context: CallbackContext) -> None:
                 update.message.reply_text(
                     "Sorry we found nothing in our record, but I recommend this to you  https://www.discoverhongkong.cn/index.html")
             else:
-                reply = redis1.mget(key[:min(5, len(key))])
+                reply = [x.decode('UTF-8') for x in redis1.mget(key[:min(5, len(key))])]
                 update.message.reply_text("\n".join(reply))
     except (IndexError, ValueError):
         update.message.reply_text('Usage: /hiking <keyword>')
