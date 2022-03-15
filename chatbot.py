@@ -26,12 +26,10 @@ def main():
 
     # register a dispatcher to handle message: here we register an echo dispatcher
     echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
-    dispatcher.add_handler(echo_handler)
+    dispatcher.hiking_handler(echo_handler)
 
     # on different commands - answer in Telegram
-    dispatcher.add_handler(CommandHandler("add", add))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(CommandHandler("hello", hello))
+    dispatcher.hiking_handler(CommandHandler("hiking", hiking))
 
     # To start the bot:
     updater.start_polling()
@@ -45,31 +43,26 @@ def echo(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
 
 
-# Define a few command handlers. These usually take the two arguments update and
+# Define a few command handlers. These usually take the one arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
-def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Helping you helping you.')
 
-
-def hello(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    msg = context.args[0]
-    print(msg)
-    if msg == "Kevin":
-        update.message.reply_text('Good day, Kevin!')
-
-
-def add(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /add is issued."""
+def hiking(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /hiking is issued."""
     try:
         global redis1
         logging.info(context.args[0])
-        msg = context.args[0]  # /add keyword <-- this should store the keyword
-        redis1.incr(msg)
-        update.message.reply_text('You have said ' + msg + ' for ' + redis1.get(msg).decode('UTF-8') + ' times.')
+        msg = context.args[0]  # /hiking keyword <-- this should store the keyword
+        if redis1.exists(msg):
+            update.message.reply_text(redis1.get(msg))
+        else:
+            msg = "*" + msg + "*"
+            key = redis1.keys(msg)
+            if not key:
+                update.message.reply_text("Sorry we found nothing https://www.discoverhongkong.cn/index.html")
+            else:
+                update.message.reply_text(redis1.mget(key[:min(5, len(key))]))
     except (IndexError, ValueError):
-        update.message.reply_text('Usage: /add <keyword>')
+        update.message.reply_text('Usage: /hiking <keyword>')
 
 
 if __name__ == '__main__':
